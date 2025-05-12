@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "u5DfDRUv3Xg=",
+  "success": true,
+  "projectFilePath": "/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/YandexCalendarReader.csproj",
+  "expectedPackageFiles": [
+    "/Users/alba/.nuget/packages/identitymodel/6.0.0/identitymodel.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

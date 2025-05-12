@@ -1,0 +1,17 @@
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/bin/Debug/net8.0/YandexCalendarReader
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/bin/Debug/net8.0/YandexCalendarReader.deps.json
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/bin/Debug/net8.0/YandexCalendarReader.runtimeconfig.json
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/bin/Debug/net8.0/YandexCalendarReader.dll
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/bin/Debug/net8.0/YandexCalendarReader.pdb
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/obj/Debug/net8.0/YandexCalendarReader.GeneratedMSBuildEditorConfig.editorconfig
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/obj/Debug/net8.0/YandexCalendarReader.AssemblyInfoInputs.cache
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/obj/Debug/net8.0/YandexCalendarReader.AssemblyInfo.cs
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/obj/Debug/net8.0/YandexCalendarReader.csproj.CoreCompileInputs.cache
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/obj/Debug/net8.0/YandexCalendarReader.dll
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/obj/Debug/net8.0/refint/YandexCalendarReader.dll
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/obj/Debug/net8.0/YandexCalendarReader.pdb
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/obj/Debug/net8.0/YandexCalendarReader.genruntimeconfig.cache
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/obj/Debug/net8.0/ref/YandexCalendarReader.dll
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/bin/Debug/net8.0/IdentityModel.dll
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/obj/Debug/net8.0/YandexCalendarReader.csproj.AssemblyReference.cache
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/obj/Debug/net8.0/YandexCa.E655000E.Up2Date
