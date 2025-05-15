@@ -7,14 +7,25 @@ using WebDav;
 
 class Program
 {
-    
     // TODO: Тех Задание 
     // В ближайших планах сделать программу работающую в фоне 
     // Причесать код
     // Запихнуть = инкапсулировать где нужно
-    // Добавить больше переменных чтобы Пользователь кастомизировал Время Шедулера Разброс Дней которые Шедулер будет проверять(В будущих версиях добавится - для этого нужна механика проверки существования "отработанного времени")
+    // Добавить больше переменных чтобы Пользователь кастомизировал Время Шедулера А в будущем и Разброс Дней которые Шедулер будет проверять(В будущих версиях добавится - для этого нужна механика проверки существования "отработанного времени")
     // Добавить больше безопасности при работе с УДП проверки существования события проверки отработанного времени. Как это делать конечно большой вопрос.
     // 
+    //
+    // ------------------------
+    //      ╱ ╱▔▔▔▔▔▔▔╲ 
+    //       ╱          ╲ 
+    //      ▕            ▕ 
+    //      ▕╭━╮╮╭━╮┣╯   ▕ 
+    //      ▕┃▕▋┊┃▕▋╰╮    ▏
+    //      ▕╰━╭╮╰━╯    ╰┈▏
+    //      ▕▂╮┗┛   ╭┳┳┳╯▕ 
+    //      ^v^ ┳┳┳┳┳┫╰┃▂╱ 
+    //      ^v^▕╋╋╋╋┫┃▕╯ 
+    //      ^v^▕┻┻┻┻┻╯▕ 
     
     static async Task Main()
     {
@@ -118,53 +129,6 @@ class Program
         }
     }
 
-/*
-// 4. Парсинг событий
-Console.WriteLine("\n4. Обработка полученных событий:");
-
-var xdoc = XDocument.Parse(null);
-
-var nsDav = XNamespace.Get("DAV:");
-var nsCaldav = XNamespace.Get("urn:ietf:params:xml:ns:caldav");
-
-var events = new List<CalendarEvents>();
-
-foreach (var response in xdoc.Descendants(nsDav + "response"))
-{
-    var calendarData = response.Descendants(nsCaldav + "calendar-data").FirstOrDefault();
-    if (calendarData != null)
-    {
-        var parsedEvent = CalendarEvents.ParseFromICS(calendarData.Value);
-        if (parsedEvent != null)
-        {
-            events.Add(parsedEvent);
-        }
-    }
-}
-
-if (events.Count == 0)
-{
-    Console.WriteLine("На выбранную дату событий нет.");
-}
-else
-{
-    foreach (var e in events)
-    {
-        Console.WriteLine($"- [{e.Start:HH:mm}] {e.Summary}");
-    }
-}
-
-Console.WriteLine("\nГотово!");
-}
-catch (Exception ex)
-{
-Console.WriteLine($"\nПроизошла ошибка: {ex.Message}");
-}
-
-}
-}*/
-
-
     public class CalendarEvent
     {
         public string Summary { get; set; }
@@ -220,8 +184,6 @@ Console.WriteLine($"\nПроизошла ошибка: {ex.Message}");
         }
 
     }
-
-
 
     public class CalendarEvents
     {
