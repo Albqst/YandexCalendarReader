@@ -14,6 +14,19 @@
             "related": ".pdb;.xml"
           }
         }
+      },
+      "WebDav.Client/2.9.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/WebDav.Client.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/WebDav.Client.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
       }
     }
   },
@@ -44,11 +57,34 @@
         "lib/netstandard2.0/IdentityModel.pdb",
         "lib/netstandard2.0/IdentityModel.xml"
       ]
+    },
+    "WebDav.Client/2.9.0": {
+      "sha512": "GLhd1tQAJeuVO1sj3Wm/dkg0GEVWxk+XGl6rdegMSMHenZuOaWQw4PifWDsjNEC1dtV1/C8JJfK0qfdkM+VIgA==",
+      "type": "package",
+      "path": "webdav.client/2.9.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "README.md",
+        "lib/net45/WebDav.Client.dll",
+        "lib/net45/WebDav.Client.pdb",
+        "lib/net45/WebDav.Client.xml",
+        "lib/netstandard1.1/WebDav.Client.dll",
+        "lib/netstandard1.1/WebDav.Client.pdb",
+        "lib/netstandard1.1/WebDav.Client.xml",
+        "lib/netstandard2.0/WebDav.Client.dll",
+        "lib/netstandard2.0/WebDav.Client.pdb",
+        "lib/netstandard2.0/WebDav.Client.xml",
+        "webdav.client.2.9.0.nupkg.sha512",
+        "webdav.client.nuspec"
+      ]
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-      "IdentityModel >= 6.0.0"
+      "IdentityModel >= 6.0.0",
+      "WebDav.Client >= 2.9.0"
     ]
   },
   "packageFolders": {
@@ -97,6 +133,10 @@
           "IdentityModel": {
             "target": "Package",
             "version": "[6.0.0, )"
+          },
+          "WebDav.Client": {
+            "target": "Package",
+            "version": "[2.9.0, )"
           }
         },
         "imports": [

@@ -47,6 +47,10 @@
             "IdentityModel": {
               "target": "Package",
               "version": "[6.0.0, )"
+            },
+            "WebDav.Client": {
+              "target": "Package",
+              "version": "[2.9.0, )"
             }
           },
           "imports": [

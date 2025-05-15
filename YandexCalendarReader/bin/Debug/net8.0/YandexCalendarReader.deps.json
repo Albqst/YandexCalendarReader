@@ -8,7 +8,8 @@
     ".NETCoreApp,Version=v8.0": {
       "YandexCalendarReader/1.0.0": {
         "dependencies": {
-          "IdentityModel": "6.0.0"
+          "IdentityModel": "6.0.0",
+          "WebDav.Client": "2.9.0"
         },
         "runtime": {
           "YandexCalendarReader.dll": {}
@@ -19,6 +20,14 @@
           "lib/net6.0/IdentityModel.dll": {
             "assemblyVersion": "6.0.0.0",
             "fileVersion": "6.0.0.0"
+          }
+        }
+      },
+      "WebDav.Client/2.9.0": {
+        "runtime": {
+          "lib/netstandard2.0/WebDav.Client.dll": {
+            "assemblyVersion": "2.9.0.0",
+            "fileVersion": "2.9.0.0"
           }
         }
       }
@@ -36,6 +45,13 @@
       "sha512": "sha512-eVHCR7a6m/dm5RFcBzE3qs/Jg5j9R5Rjpu8aTOv9e4AFvaQtBXb5ah7kmwU+YwA0ufRwz4wf1hnIvsD2hSnI4g==",
       "path": "identitymodel/6.0.0",
       "hashPath": "identitymodel.6.0.0.nupkg.sha512"
+    },
+    "WebDav.Client/2.9.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-GLhd1tQAJeuVO1sj3Wm/dkg0GEVWxk+XGl6rdegMSMHenZuOaWQw4PifWDsjNEC1dtV1/C8JJfK0qfdkM+VIgA==",
+      "path": "webdav.client/2.9.0",
+      "hashPath": "webdav.client.2.9.0.nupkg.sha512"
     }
   }
 }

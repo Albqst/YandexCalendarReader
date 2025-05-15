@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "u5DfDRUv3Xg=",
+  "dgSpecHash": "kU1Wg+lW3b4=",
   "success": true,
   "projectFilePath": "/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/YandexCalendarReader.csproj",
   "expectedPackageFiles": [
-    "/Users/alba/.nuget/packages/identitymodel/6.0.0/identitymodel.6.0.0.nupkg.sha512"
+    "/Users/alba/.nuget/packages/identitymodel/6.0.0/identitymodel.6.0.0.nupkg.sha512",
+    "/Users/alba/.nuget/packages/webdav.client/2.9.0/webdav.client.2.9.0.nupkg.sha512"
   ],
   "logs": []
 }
