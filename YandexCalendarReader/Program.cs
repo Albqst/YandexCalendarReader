@@ -7,6 +7,15 @@ using WebDav;
 
 class Program
 {
+    
+    // TODO: Тех Задание 
+    // В ближайших планах сделать программу работающую в фоне 
+    // Причесать код
+    // Запихнуть = инкапсулировать где нужно
+    // Добавить больше переменных чтобы Пользователь кастомизировал Время Шедулера Разброс Дней которые Шедулер будет проверять(В будущих версиях добавится - для этого нужна механика проверки существования "отработанного времени")
+    // Добавить больше безопасности при работе с УДП проверки существования события проверки отработанного времени. Как это делать конечно большой вопрос.
+    // 
+    
     static async Task Main()
     {
         // Ваши данные OAuth
@@ -43,6 +52,12 @@ class Program
                 { "code", authCode },
                 { "client_id", clientId },
                 { "client_secret", clientSecret }
+                /*
+                 * { "grant_type", "refresh_token" },
+                   { "refresh_token", "<your_refresh_token>" },
+                   { "client_id", "<your_client_id>" },
+                   { "client_secret", "<your_client_secret>" }  //Раскомментить чтобы попробовать автообновление Токена
+                 */
             });
 
             var tokenResponse = await clientToken.PostAsync("https://oauth.yandex.ru/token", tokenRequest);
