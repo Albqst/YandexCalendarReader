@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("YandexCalendarReader")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+34a236d8a8758963e78665405768c2ceceeea74d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f407885bb09efad8aeabefa17a1346d9897fa410")]
 [assembly: System.Reflection.AssemblyProductAttribute("YandexCalendarReader")]
 [assembly: System.Reflection.AssemblyTitleAttribute("YandexCalendarReader")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

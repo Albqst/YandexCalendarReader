@@ -8,6 +8,7 @@ using WebDav;
 class Program
 {
     // TODO: Тех Задание 
+    // Сотворить подключение к CITYP 
     // В ближайших планах сделать программу работающую в фоне 
     // Причесать код
     // Запихнуть = инкапсулировать где нужно
@@ -35,6 +36,7 @@ class Program
         var redirectUri = "https://oauth.yandex.ru/verification_code"; // не менять
         var scope = "login:email"; // доступ к календарю
         var PasswordAlbert = "kuptvxhftiefoauz"; // пароль к приложению
+        var nameOfCalendar = "Алиса"; // Алисa
         string calendarUri = "";
 
         try
@@ -103,13 +105,19 @@ class Program
             var result = await client.Propfind(calendarsPath);
 
             var loader = new Load();
-            calendarUri =
-                loader.GetTargetCalendarUri(result, calendarUri); // Получили ссылку на целевой календарь с событиями
+            calendarUri = 
+                loader.GetTargetCalendarUri(
+                    result,
+                    calendarUri,
+                    nameOfCalendar); // Получили ссылку на целевой календарь с событиями
 
             // 3. Запрос REPORT-запрос типа calendar-query с фильтром по дате по календарю Алиса
-            var responseXmlList = await loader.GetCalendarEvents(calendarUri, "iroromani@yandex.ru", PasswordAlbert);
+            var responseXmlList = 
+                await loader.GetCalendarEvents(
+                    calendarUri,
+                    "iroromani@yandex.ru",
+                    PasswordAlbert);
 
-            // string calendarData2 = "...твой текст между BEGIN:VCALENDAR ... END:VCALENDAR...";
             var parser = new CalendarEvent();
             foreach (var stroke in responseXmlList)
             {
@@ -122,7 +130,7 @@ class Program
                 Console.WriteLine($"Ссылка: {evt.Url}");
             }
 
-            Console.WriteLine("Получилось!");
+            Console.WriteLine("Получилось и работает!");
         }
         catch (Exception ex){
             Console.WriteLine(ex.Message);
@@ -221,19 +229,18 @@ class Program
                 return null;
             }
         }
-
     }
 
     public class Load
     {
-        public string GetTargetCalendarUri(PropfindResponse result, string calendarUri)
+        public string GetTargetCalendarUri(PropfindResponse result, string calendarUri, string nameCalendar)
         {
             foreach (var resource in result.Resources)
             {
                 Console.WriteLine($"Resource: {resource.Uri}");
                 foreach (var prop in resource.Properties)
                 {
-                    calendarUri = prop.Value == "Алисa" ? resource.Uri : "Не найден календарь с именем Алиса!";
+                    calendarUri = prop.Value == nameCalendar ? resource.Uri : "Не найден календарь с именем Алиса!";
                     if (calendarUri.StartsWith("/calendars/iroromani"))
                     {
                         return calendarUri;
