@@ -108,11 +108,11 @@ public class TokenRefresher
 
     public async Task<string> GetValidAccessTokenAsync()
     {
-        // if (!string.IsNullOrWhiteSpace(_settings.AccessToken))
-        // {
-        //     // Здесь можно добавить проверку срока действия токена, если ты его где-то сохраняешь с меткой времени.
-        //     return _settings.AccessToken;
-        // }
+        if (!string.IsNullOrWhiteSpace(_settings.AccessToken))
+        {
+            // Здесь можно добавить проверку срока действия токена, если ты его где-то сохраняешь с меткой времени.
+            return _settings.AccessToken;
+        }
 
         return await RefreshAccessTokenAsync();
     }
