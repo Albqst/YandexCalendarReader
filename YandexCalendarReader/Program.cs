@@ -49,7 +49,7 @@ class Program
         var accessToken = await refresher.GetValidAccessTokenAsync();
         Console.WriteLine("Access Token получен");
 
-        // Запускаем таймер на 5 минут
+        // Запускаем таймер на 5 минут срабатывание - доработать логику рефреш и поулчение токена
         _timer = new System.Timers.Timer(TimeSpan.FromMinutes(5).TotalMilliseconds);
         _timer.Elapsed += async (sender, e) =>
         {
