@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Http.Headers;
 using System.Text.Json;
 using WebDav;
 
@@ -20,66 +21,45 @@ public class TokenRefresher
     {
         try
         {
-            Console.WriteLine("===== Яндекс Календарь Reader =====\n");
+            if (string.IsNullOrWhiteSpace(_settings.RefreshToken))
+                throw new Exception("Нет refresh_token. Получите его через авторизацию с code.");
 
-            // 1. OAuth авторизация
-            Console.WriteLine("1. Авторизация в Яндексе");
-            var oauthUrl = $"https://oauth.yandex.ru/authorize?response_type=code&client_id={_settings.ClientId}&scope={_settings.Scope}";
-            Console.WriteLine($"Откройте в браузере:\n{oauthUrl}");
-
-            Console.Write("\nВведите код авторизации: ");
-            var authCode = Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(authCode))
-            {
-                Console.WriteLine("Ошибка: Код авторизации пустой.");
-            }
-
-            using var clientToken = new HttpClient();
-
-            Console.WriteLine("\n2. Запрашиваем access_token...");
+            using var client = new HttpClient();
             var tokenRequest = new FormUrlEncodedContent(new Dictionary<string, string>
             {
-                { "grant_type", "authorization_code" },
-                { "code", authCode },
+                { "grant_type", "refresh_token" },
+                { "refresh_token", _settings.RefreshToken },
                 { "client_id", _settings.ClientId },
                 { "client_secret", _settings.ClientSecret }
-                /*
-                 * { "grant_type", "refresh_token" },
-                   { "refresh_token", "<your_refresh_token>" },
-                   { "client_id", "<your_client_id>" },
-                   { "client_secret", "<your_client_secret>" }  //Раскомментить чтобы попробовать автообновление Токена
-                 */
             });
 
-            var tokenResponse = await clientToken.PostAsync("https://oauth.yandex.ru/token", tokenRequest);
-            if (!tokenResponse.IsSuccessStatusCode)
+            var response = await client.PostAsync(TokenUrl, tokenRequest);
+            var content = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+                throw new Exception($"Ошибка обновления токена: {content}");
+
+            var doc = JsonDocument.Parse(content);
+            var accessToken = doc.RootElement.GetProperty("access_token").GetString();
+            _settings.AccessToken = accessToken;
+
+            if (doc.RootElement.TryGetProperty("refresh_token", out var newRefresh))
             {
-                Console.WriteLine($"Ошибка получения токена: {tokenResponse.StatusCode}");
-                var errorContent = await tokenResponse.Content.ReadAsStringAsync();
-                Console.WriteLine(errorContent);
+                _settings.RefreshToken = newRefresh.GetString();
             }
 
-            var tokenJson = await tokenResponse.Content.ReadAsStringAsync();
-            File.WriteAllText("token.json", tokenJson); // Прописать как поднимать токен!!!
-
-
-            // Прописать как поднимать токен!!!// Прописать как поднимать токен!!!
-            // Прописать как поднимать токен!!!// Прописать как поднимать токен!!!
-
-            var tokenData = System.Text.Json.JsonDocument.Parse(tokenJson);
-            var accessToken = tokenData.RootElement.GetProperty("access_token").GetString();
-
-            Console.WriteLine("Токен успешно получен.\n");
+            Loader.Save(_settings, _settingsFilePath);
+            File.WriteAllText("token.json", content);
 
             //2 
-            var client = new WebDavClient(new WebDavClientParams
+            var clientWebDavClient = new WebDavClient(new WebDavClientParams
             {
                 BaseAddress = new Uri("https://caldav.yandex.ru"),
                 Credentials = new NetworkCredential("iroromani@yandex.ru", _settings.PasswordAlbert)
             });
 
             var calendarsPath = "/calendars/iroromani@yandex.ru/";
-            var result = await client.Propfind(calendarsPath);
+            var result = await clientWebDavClient.Propfind(calendarsPath);
         
             _settings.CalendarUri =
                 Loader.GetTargetCalendarUri(
@@ -95,6 +75,7 @@ public class TokenRefresher
                     _settings.PasswordAlbert);
 
             var parser = new CalendarEvent();
+            
             foreach (var stroke in responseXmlList)
             {
                 var evt = parser.ParseVEvent(stroke);
@@ -115,12 +96,24 @@ public class TokenRefresher
             // }
 
             Console.WriteLine("Получилось и работает!");
+            
+            return accessToken!;
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Console.WriteLine($"Ошибка при обновлении токена: {ex.Message}");
+            return null;
         }
-        
-        return null; // понять что возвращать
+    }
+
+    public async Task<string> GetValidAccessTokenAsync()
+    {
+        // if (!string.IsNullOrWhiteSpace(_settings.AccessToken))
+        // {
+        //     // Здесь можно добавить проверку срока действия токена, если ты его где-то сохраняешь с меткой времени.
+        //     return _settings.AccessToken;
+        // }
+
+        return await RefreshAccessTokenAsync();
     }
 }

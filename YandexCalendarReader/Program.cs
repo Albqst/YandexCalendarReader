@@ -39,8 +39,8 @@ class Program
             .Build();
 
         var refresher = host.Services.GetRequiredService<TokenRefresher>();
-        var accessToken = await refresher.RefreshAccessTokenAsync();
-
-        Console.WriteLine("Access Token: " + accessToken);
+        var accessToken = await refresher.GetValidAccessTokenAsync();
+        
+        // Console.WriteLine("Access Token: " + accessToken);
     }
 }
