@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using YandexCalendarReader.Service;
+using System.Timers;
 
 // TODO: Тех Задание 
 // Сотворить подключение к CITYP 
@@ -23,6 +24,8 @@ using YandexCalendarReader.Service;
 //      ^v^▕┻┻┻┻┻╯▕ 
 class Program
 {
+    private static System.Timers.Timer? _timer;
+
     public static async Task Main(string[] args)
     {
         using IHost host = Host.CreateDefaultBuilder(args)
@@ -30,17 +33,41 @@ class Program
             {
                 // Загружаем конфиг
                 var settings = Loader.Load("appsettings.json");
-                services.AddSingleton(settings);
 
-                // Добавляем TokenRefresher
+                // При каждом запуске обнуляем AccessToken, чтобы не использовать старый
+                settings.AccessToken = null;
+
+                services.AddSingleton(settings);
                 services.AddSingleton<TokenRefresher>();
                 services.AddSingleton<ReadYandex>();
             })
             .Build();
 
         var refresher = host.Services.GetRequiredService<TokenRefresher>();
+
+        // Получаем токен сразу
         var accessToken = await refresher.GetValidAccessTokenAsync();
-        
-        // Console.WriteLine("Access Token: " + accessToken);
+        Console.WriteLine("Access Token получен");
+
+        // Запускаем таймер на 5 минут
+        _timer = new System.Timers.Timer(TimeSpan.FromMinutes(5).TotalMilliseconds);
+        _timer.Elapsed += async (sender, e) =>
+        {
+            try
+            {
+                var token = await refresher.GetValidAccessTokenAsync();
+                Console.WriteLine($"[{DateTime.Now}] Access Token обновлён.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка обновления токена по таймеру: {ex.Message}");
+            }
+        };
+        _timer.AutoReset = true;
+        _timer.Start();
+
+        // Блокируем завершение программы
+        Console.WriteLine("Нажмите Enter для выхода...");
+        Console.ReadLine();
     }
 }
