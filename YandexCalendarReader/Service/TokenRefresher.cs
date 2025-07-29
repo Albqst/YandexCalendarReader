@@ -21,6 +21,11 @@ public class TokenRefresher
     {
         try
         {
+            var json = File.ReadAllText("token.json");
+            // var token = JsonSerializer.Deserialize<TokenData>(json);
+            TokenData tokenData = JsonSerializer.Deserialize<TokenData>(json);
+            
+            _settings.RefreshToken = tokenData.RefreshToken;
             if (string.IsNullOrWhiteSpace(_settings.RefreshToken))
                 throw new Exception("Нет refresh_token. Получите его через авторизацию с code.");
 

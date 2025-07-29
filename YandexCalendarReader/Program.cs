@@ -37,18 +37,35 @@ class Program
                 services.AddSingleton(settings);
                 services.AddSingleton<TokenRefresher>();
                 services.AddSingleton<ReadYandex>();
+                
+                services.AddEndpointsApiExplorer();
+                services.AddRouting();
+            }).ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.Configure(app =>
+                {
+                    var readYandex = app.ApplicationServices.GetRequiredService<ReadYandex>();
+
+                    app.UseRouting();
+
+                    app.UseEndpoints(endpoints =>
+                    {
+                        // Эндпоинт для получения событий
+                        endpoints.MapGet("/events", async context =>
+                        {
+                            var events = await readYandex.GetCalendarEvents("","iroromani@yandex.ru" ,"kuptvxhftiefoauz"); // Твой метод получения событий
+                            context.Response.ContentType = "application/json";
+                            await context.Response.WriteAsJsonAsync(events);
+                        });
+                    });
+                });
             })
             .Build();
 
+        // Запускаем периодическое обновление токена
         var refresher = host.Services.GetRequiredService<TokenRefresher>();
 
-        // Получаем токен сразу
-        var accessToken = await refresher.GetValidAccessTokenAsync();
-        Console.WriteLine("Access Token получен"); // Установить время обновления токена при условии что приложение
-        // работает в фоне и понять может ли быть проблема вход в сон компа если логика будет оставлена на локальном ПК
-
-        // Запускаем таймер на 5 минут срабатывание - доработать логику рефреш и поулчение токена
-        _timer = new System.Timers.Timer(TimeSpan.FromMinutes(5).TotalMilliseconds);
+        _timer = new System.Timers.Timer(TimeSpan.FromMinutes(1).TotalMilliseconds);
         _timer.Elapsed += async (sender, e) =>
         {
             try
@@ -63,6 +80,8 @@ class Program
         };
         _timer.AutoReset = true;
         _timer.Start();
+
+        await host.RunAsync();
 
         // Блокируем завершение программы
         Console.WriteLine("Нажмите Enter для выхода...");

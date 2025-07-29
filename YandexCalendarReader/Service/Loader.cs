@@ -54,8 +54,8 @@ public static class Loader
             httpClient.BaseAddress = new Uri("https://caldav.yandex.ru");
 
             // Установить интервал даты: 14 мая 2025, с 00:00 до 23:59
-            var startDate = new DateTime(2025, 5, 15);
-            var endDate = new DateTime(2025, 5, 16);
+            var startDate = new DateTime(2025, 7, 28);
+            var endDate = new DateTime(2025, 7, 30);
 
             // Формат в стиле "yyyyMMddTHHmmssZ"
             string startUtc = startDate.ToUniversalTime().ToString("yyyyMMdd'T'HHmmss'Z'");

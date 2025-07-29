@@ -53,3 +53,13 @@
 /Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/bin/Debug/net8.0/runtimes/win/lib/net8.0/System.Diagnostics.EventLog.dll
 /Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/bin/Debug/net8.0/runtimes/browser/lib/net8.0/System.Text.Encodings.Web.dll
 /Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/bin/Debug/net8.0/appsettings.json
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/obj/Debug/net8.0/YandexCalendarReader.MvcApplicationPartsAssemblyInfo.cache
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/obj/Debug/net8.0/staticwebassets.build.json
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/obj/Debug/net8.0/staticwebassets.development.json
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/obj/Debug/net8.0/staticwebassets/msbuild.YandexCalendarReader.Microsoft.AspNetCore.StaticWebAssets.props
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/obj/Debug/net8.0/staticwebassets/msbuild.build.YandexCalendarReader.props
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.YandexCalendarReader.props
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.YandexCalendarReader.props
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/obj/Debug/net8.0/staticwebassets.pack.json
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/obj/Debug/net8.0/scopedcss/bundle/YandexCalendarReader.styles.css
+/Users/alba/Projects/SandBox/YandexCalendarReader/YandexCalendarReader/bin/Debug/net8.0/token.json
