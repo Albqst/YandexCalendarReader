@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using YandexCalendarReader.Service;
 using System.Timers;
+using Microsoft.EntityFrameworkCore;
 
 // TODO: Тех Задание 
 // Сотворить подключение к CITYP
@@ -19,10 +20,11 @@ using System.Timers;
 //      ^v^ ┳┳┳┳┳┫╰┃▂╱ 
 //      ^v^▕╋╋╋╋┫┃▕╯ 
 //      ^v^▕┻┻┻┻┻╯▕ 
+
 class Program
 {
     private static System.Timers.Timer? _timer;
-
+    
     public static async Task Main(string[] args)
     {
         using IHost host = Host.CreateDefaultBuilder(args)
@@ -31,10 +33,13 @@ class Program
                 // Загружаем конфиг
                 var settings = Loader.Load("appsettings.json");
 
+                // var connectionString = context.Configuration.GetConnectionString("Postgres");
                 // При каждом запуске обнуляем AccessToken, чтобы не использовать старый
                 settings.AccessToken = null;
 
                 services.AddSingleton(settings);
+                services.AddDbContext<AppDbContext>(options =>
+                    options.UseNpgsql(context.Configuration.GetConnectionString("Postgres")));
                 services.AddSingleton<TokenRefresher>();
                 services.AddSingleton<ReadYandex>();
                 
@@ -59,6 +64,7 @@ class Program
                         });
                     });
                 });
+
             })
             .Build();
 
@@ -70,7 +76,7 @@ class Program
         {
             try
             {
-                var token = await refresher.GetValidAccessTokenAsync();
+                await refresher.GetValidAccessTokenAsync();
                 Console.WriteLine($"[{DateTime.Now}] Access Token обновлён.");
             }
             catch (Exception ex)
@@ -78,6 +84,7 @@ class Program
                 Console.WriteLine($"Ошибка обновления токена по таймеру: {ex.Message}");
             }
         };
+        
         _timer.AutoReset = true;
         _timer.Start();
 
