@@ -1,5 +1,4 @@
 using System.Net;
-using System.Net.Http.Headers;
 using System.Text.Json;
 using WebDav;
 
@@ -76,7 +75,7 @@ public class TokenRefresher
             var responseXmlList =
                 await Loader.GetCalendarEvents(
                     _settings.CalendarUri,
-                    "iroromani@yandex.ru", // вынесли в апсетинги или в код
+                    "iroromani@yandex.ru",
                     _settings.PasswordAlbert);
 
             var parser = new CalendarEvent();

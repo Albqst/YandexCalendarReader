@@ -1,7 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using YandexCalendarReader.Service;
-using System.Timers;
+﻿using YandexCalendarReader.Service;
 using Microsoft.EntityFrameworkCore;
 
 // TODO: Тех Задание 
@@ -30,19 +27,18 @@ class Program
         using IHost host = Host.CreateDefaultBuilder(args)
             .ConfigureServices((context, services) =>
             {
-                // Загружаем конфиг
-                var settings = Loader.Load("appsettings.json");
+                services.Configure<AppSettings>(context.Configuration.GetSection("AppSettings"));
 
-                // var connectionString = context.Configuration.GetConnectionString("Postgres");
-                // При каждом запуске обнуляем AccessToken, чтобы не использовать старый
-                settings.AccessToken = null;
-
+                var settings = context.Configuration.GetSection("AppSettings").Get<AppSettings>();
+                
                 services.AddSingleton(settings);
+
                 services.AddDbContext<AppDbContext>(options =>
                     options.UseNpgsql(context.Configuration.GetConnectionString("Postgres")));
+
                 services.AddSingleton<TokenRefresher>();
                 services.AddSingleton<ReadYandex>();
-                
+
                 services.AddEndpointsApiExplorer();
                 services.AddRouting();
             }).ConfigureWebHostDefaults(webBuilder =>
@@ -55,20 +51,22 @@ class Program
 
                     app.UseEndpoints(endpoints =>
                     {
-                        // Эндпоинт для получения событий
                         endpoints.MapGet("/events", async context =>
                         {
-                            var events = await readYandex.GetCalendarEvents("","iroromani@yandex.ru" ,"kuptvxhftiefoauz"); // Твой метод получения событий
+                            var settings = context.RequestServices.GetRequiredService<AppSettings>();
+
+                            var events = await readYandex.ReadAsync(settings);
+
                             context.Response.ContentType = "application/json";
                             await context.Response.WriteAsJsonAsync(events);
                         });
                     });
                 });
+                webBuilder.UseUrls("http://localhost:5000");
 
             })
             .Build();
 
-        // Запускаем периодическое обновление токена
         var refresher = host.Services.GetRequiredService<TokenRefresher>();
 
         _timer = new System.Timers.Timer(TimeSpan.FromMinutes(1).TotalMilliseconds);
@@ -90,7 +88,6 @@ class Program
 
         await host.RunAsync();
 
-        // Блокируем завершение программы
         Console.WriteLine("Нажмите Enter для выхода...");
         Console.ReadLine();
     }
