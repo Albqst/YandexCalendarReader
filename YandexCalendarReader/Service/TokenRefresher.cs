@@ -84,11 +84,9 @@ public class TokenRefresher
             {
                 var evt = parser.ParseVEvent(stroke);
 
-                Console.WriteLine($"Событие: {evt.Summary}");
-                Console.WriteLine($"Время: {evt.Start} — {evt.End}");
-                Console.WriteLine($"Описание: {evt.Description}");
-                Console.WriteLine($"Повтор: {evt.RRule}");
-                Console.WriteLine($"Ссылка: {evt.Url}");
+                Console.WriteLine($"Событие: {evt.summary}");
+                Console.WriteLine($"Время: {evt.start} — {evt.end}");
+                Console.WriteLine($"Описание: {evt.description}");
             }
         
             // Проверим, есть ли новый refresh_token

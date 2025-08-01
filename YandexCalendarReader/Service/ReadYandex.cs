@@ -14,11 +14,12 @@ public class ReadYandex
     private readonly TokenRefresher _refresher;
     private readonly string _settingsFilePath = "appsettings.json"; // константа внутри класса
 
+    // сейчас вызывается зря напрямую без контроллера а потом еще и контроллер отрабатывает
     public ReadYandex(IOptions<AppSettings> options, TokenRefresher refresher)
     {
         _settings = options.Value ?? throw new ArgumentNullException(nameof(options));
         _refresher = refresher ?? throw new ArgumentNullException(nameof(refresher)); 
-        ReadAsync(_settings).GetAwaiter().GetResult();
+        ReadAsync(null, _settings).GetAwaiter().GetResult();
     }
 
 
@@ -27,7 +28,7 @@ public class ReadYandex
 
     // 1. OAuth авторизация
     
-    public async Task<List<CalendarEvent>> ReadAsync(AppSettings settings)
+    public async Task<List<CalendarEvent>> ReadAsync(AppDbContext dbContext, AppSettings settings)
     {
         List<CalendarEvent> listEvents = [];
 
@@ -104,8 +105,27 @@ public class ReadYandex
             var evt = parser.ParseVEvent(stroke);
             listEvents.Add(evt);
         }
+        
+        Console.WriteLine("События успешно загружены на ендпоинт.");
+        
+        // await using var scope = dbContext;
+        // var dbEvents = dbContext.CalendarEvents;
 
-        Console.WriteLine("События успешно загружены.");
+        // foreach (var ev in listEvents)
+        // {
+            // dbEvents.Add(new CalendarEvent
+            // {
+                // Summary = ev.Summary,
+                // Description = ev.Description,
+                // Start = ev.Start,
+                // End = ev.End
+            // });
+        // }
+
+        // await dbContext.SaveChangesAsync();
+        
+        Console.WriteLine("События сохранены в PostgreSQL.");
+        
     }
     catch (Exception ex)
     {

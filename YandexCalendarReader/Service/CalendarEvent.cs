@@ -4,13 +4,11 @@ namespace YandexCalendarReader.Service;
 
 public class CalendarEvent
 {
-    public string Summary { get; set; }
-    public DateTime Start { get; set; }
-    public DateTime End { get; set; }
-    public string Description { get; set; }
-    public string Url { get; set; }
-    public string Uid { get; set; }
-    public string RRule { get; set; }
+    public int id { get; set; }
+    public string summary { get; set; }
+    public DateTime start { get; set; }
+    public DateTime end { get; set; }
+    public string description { get; set; }
 
     public CalendarEvent ParseVEvent(string calendarData)
     {
@@ -20,25 +18,17 @@ public class CalendarEvent
         foreach (var line in lines)
         {
             if (line.StartsWith("SUMMARY:"))
-                evt.Summary = line.Substring("SUMMARY:".Length);
+                evt.summary = line.Substring("SUMMARY:".Length);
 
             if (line.StartsWith("DTSTART"))
-                evt.Start = ParseDateTime(line);
+                evt.start = ParseDateTime(line);
 
             if (line.StartsWith("DTEND"))
-                evt.End = ParseDateTime(line);
+                evt.end = ParseDateTime(line);
 
             if (line.StartsWith("DESCRIPTION:"))
-                evt.Description = line.Substring("DESCRIPTION:".Length).Replace("\\n", "\n");
-
-            if (line.StartsWith("URL:"))
-                evt.Url = line.Substring("URL:".Length);
-
-            if (line.StartsWith("UID:"))
-                evt.Uid = line.Substring("UID:".Length);
-
-            if (line.StartsWith("RRULE:"))
-                evt.RRule = line.Substring("RRULE:".Length);
+                evt.description = line.Substring("DESCRIPTION:".Length).Replace("\\n", "\n");
+            
         }
 
         return evt;

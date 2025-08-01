@@ -1,9 +1,10 @@
 ﻿using YandexCalendarReader.Service;
 using Microsoft.EntityFrameworkCore;
 
+
 // TODO: Тех Задание 
 // Сотворить подключение к CITYP
-// Придумать второй таймер работающий по будним дням по РАСПИСАНИЮ(может потом прикручу кастомные даты чтобы обыграть праздники)
+// Придумать вариант с горячим обновлением событий после их добавления
 // Добавить больше безопасности при работе с УДП проверки существования события проверки отработанного времени. Как это делать конечно большой вопрос.
 // 
 // ------------------------
@@ -21,56 +22,59 @@ using Microsoft.EntityFrameworkCore;
 class Program
 {
     private static System.Timers.Timer? _timer;
-    
+
     public static async Task Main(string[] args)
     {
-        using IHost host = Host.CreateDefaultBuilder(args)
-            .ConfigureServices((context, services) =>
-            {
-                services.Configure<AppSettings>(context.Configuration.GetSection("AppSettings"));
+        
+        var builder = WebApplication.CreateBuilder(args);
 
-                var settings = context.Configuration.GetSection("AppSettings").Get<AppSettings>();
-                
-                services.AddSingleton(settings);
+// Настройки
+        builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+        var settings = builder.Configuration.GetSection("AppSettings").Get<AppSettings>();
+        builder.Services.AddSingleton(settings);
 
-                services.AddDbContext<AppDbContext>(options =>
-                    options.UseNpgsql(context.Configuration.GetConnectionString("Postgres")));
+// Подключение базы
+        builder.Services.AddDbContext<AppDbContext>(options =>
+            options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres")));
 
-                services.AddSingleton<TokenRefresher>();
-                services.AddSingleton<ReadYandex>();
+// DI
+        builder.Services.AddSingleton<TokenRefresher>();
+        builder.Services.AddScoped<ReadYandex>();
 
-                services.AddEndpointsApiExplorer();
-                services.AddRouting();
-            }).ConfigureWebHostDefaults(webBuilder =>
-            {
-                webBuilder.Configure(app =>
-                {
-                    var readYandex = app.ApplicationServices.GetRequiredService<ReadYandex>();
+// Контроллеры и Swagger
+        builder.Services.AddControllers();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+        
+        var app = builder.Build();
+        
+// Создаем миграции
+        using (var scope = app.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            db.Database.Migrate(); // Применяет миграции при запуске
+        }
 
-                    app.UseRouting();
+// Swagger и ошибки
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
 
-                    app.UseEndpoints(endpoints =>
-                    {
-                        endpoints.MapGet("/events", async context =>
-                        {
-                            var settings = context.RequestServices.GetRequiredService<AppSettings>();
+// Middleware
+        app.UseRouting();
 
-                            var events = await readYandex.ReadAsync(settings);
+// Authorization можно включить позже при необходимости
+// app.UseAuthorization();
 
-                            context.Response.ContentType = "application/json";
-                            await context.Response.WriteAsJsonAsync(events);
-                        });
-                    });
-                });
-                webBuilder.UseUrls("http://localhost:5000");
+        app.MapControllers();
 
-            })
-            .Build();
-
-        var refresher = host.Services.GetRequiredService<TokenRefresher>();
-
-        _timer = new System.Timers.Timer(TimeSpan.FromMinutes(1).TotalMilliseconds);
-        _timer.Elapsed += async (sender, e) =>
+// Таймер обновления токена
+        var refresher = app.Services.GetRequiredService<TokenRefresher>();
+        var timer = new System.Timers.Timer(TimeSpan.FromMinutes(100).TotalMilliseconds);
+        timer.Elapsed += async (_, _) =>
         {
             try
             {
@@ -82,13 +86,10 @@ class Program
                 Console.WriteLine($"Ошибка обновления токена по таймеру: {ex.Message}");
             }
         };
-        
-        _timer.AutoReset = true;
-        _timer.Start();
+        timer.AutoReset = true;
+        timer.Start();
 
-        await host.RunAsync();
-
-        Console.WriteLine("Нажмите Enter для выхода...");
-        Console.ReadLine();
+// Запуск приложения
+        app.Run("http://localhost:5000");
     }
 }
